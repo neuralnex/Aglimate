@@ -1,0 +1,22 @@
+{
+  "name": "Aglimate - Farmer-First Climate Advisory",
+  "short_name": "Aglimate",
+  "description": "AI-powered agricultural advice for Nigerian smallholder farmers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#2E7D32",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
