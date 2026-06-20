@@ -80,8 +80,8 @@ export default function KnowledgePage() {
   })
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-      <h1 className="text-2xl font-bold text-text">Knowledge Base</h1>
+    <div className="max-w-3xl mx-auto px-4 py-4 sm:py-6 space-y-5">
+      <h1 className="text-xl sm:text-2xl font-bold text-text">Knowledge Base</h1>
 
       {/* Search */}
       <div className="relative">
@@ -90,16 +90,16 @@ export default function KnowledgePage() {
           placeholder="Search articles, crops, diseases..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
+          className="pl-10 text-base"
         />
       </div>
 
       {/* Categories */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
         <button
           onClick={() => setSelectedCategory(null)}
           className={cn(
-            'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+            'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0',
             !selectedCategory ? 'bg-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
           )}
         >
@@ -110,7 +110,7 @@ export default function KnowledgePage() {
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id === selectedCategory ? null : cat.id)}
             className={cn(
-              'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+              'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0',
               selectedCategory === cat.id ? 'bg-primary text-white' : 'bg-gray-100 text-text hover:bg-gray-200'
             )}
           >
@@ -126,7 +126,7 @@ export default function KnowledgePage() {
             <CardContent className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs font-medium px-2 py-0.5 bg-primary/10 text-primary rounded-full capitalize">
                       {article.category}
                     </span>
@@ -135,12 +135,12 @@ export default function KnowledgePage() {
                       {article.readTime} min
                     </span>
                   </div>
-                  <h3 className="font-semibold text-text mb-1">{article.title}</h3>
-                  <p className="text-sm text-text-secondary line-clamp-2">{article.excerpt}</p>
+                  <h3 className="font-semibold text-text mb-2 text-base sm:text-lg">{article.title}</h3>
+                  <p className="text-sm text-text-secondary line-clamp-2 sm:line-clamp-3">{article.excerpt}</p>
                 </div>
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleSaved(article.id) }}
-                  className="shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors min-h-[44px]"
                   aria-label={savedArticles.has(article.id) ? 'Remove from saved' : 'Save article'}
                 >
                   {savedArticles.has(article.id) ? (

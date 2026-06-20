@@ -23,20 +23,20 @@ export function ChatContainer() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)]">
+    <div className="flex flex-col h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] safe-area-inset-bottom">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {!hasSession || messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
+          <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
               <MessageSquare className="h-8 w-8 text-primary" />
             </div>
-            <h2 className="text-xl font-bold text-text mb-2">Ask Aglimate Anything</h2>
-            <p className="text-text-secondary max-w-sm mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-text mb-2">Ask Aglimate Anything</h2>
+            <p className="text-text-secondary max-w-sm mb-6 text-sm sm:text-base">
               Get farming advice in your language. Ask about crops, weather, pests, or anything agricultural.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
+            <div className="grid grid-cols-1 gap-2 sm:gap-3 w-full max-w-sm">
               {[
                 'Best time to plant maize?',
                 'How to treat tomato blight?',
@@ -46,7 +46,7 @@ export function ChatContainer() {
                 <button
                   key={suggestion}
                   onClick={() => sendMessage(suggestion)}
-                  className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-text hover:border-primary hover:bg-primary/5 transition-all text-left"
+                  className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-text hover:border-primary hover:bg-primary/5 transition-all text-left min-h-[44px]"
                 >
                   {suggestion}
                 </button>
@@ -64,7 +64,7 @@ export function ChatContainer() {
             ))}
             {isLoading && (
               <div className="flex gap-3">
-                <div className="shrink-0 w-8 h-8 rounded-full bg-gray-100 text-primary flex items-center justify-center">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-gray-100 text-primary flex items-center justify-center flex-shrink-0">
                   <MessageSquare className="h-4 w-4" />
                 </div>
                 <div className="space-y-2">
@@ -80,7 +80,7 @@ export function ChatContainer() {
 
       {/* New Chat Button */}
       {hasSession && messages.length > 0 && (
-        <div className="absolute top-20 right-4 z-10">
+        <div className="absolute top-16 sm:top-20 right-4 z-10">
           <Button
             variant="outline"
             size="sm"

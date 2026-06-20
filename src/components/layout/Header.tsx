@@ -9,11 +9,11 @@ import { cn } from '@/lib/utils'
 import { Menu, X, Sprout, Settings, Globe } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Home', icon: null },
-  { href: '/chat', label: 'Chat', icon: null },
-  { href: '/advisory', label: 'Advisory', icon: null },
-  { href: '/weather', label: 'Weather', icon: null },
-  { href: '/knowledge', label: 'Learn', icon: null },
+  { href: '/', label: 'Home' },
+  { href: '/chat', label: 'Chat' },
+  { href: '/advisory', label: 'Advisory' },
+  { href: '/weather', label: 'Weather' },
+  { href: '/knowledge', label: 'Learn' },
 ]
 
 export function Header() {
@@ -34,17 +34,17 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Sprout className="h-7 w-7 text-accent" />
-            <span className="text-xl font-bold tracking-tight">Aglimate</span>
+            <span className="text-lg sm:text-xl font-bold tracking-tight">Aglimate</span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[40px]',
                   pathname === item.href
                     ? 'bg-white/20 text-white'
                     : 'text-white/80 hover:bg-white/10 hover:text-white'
@@ -121,7 +121,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-primary-dark border-t border-white/10 animate-slide-up">
+        <div className="md:hidden bg-primary-dark border-t border-white/10 animate-slide-up safe-area-inset-top">
           <nav className="px-4 py-3 space-y-1">
             {NAV_ITEMS.map((item) => (
               <Link
@@ -129,7 +129,7 @@ export function Header() {
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  'px-3 py-3 rounded-lg text-sm font-medium transition-colors',
+                  'block px-4 py-3 rounded-lg text-base font-medium transition-colors min-h-[44px]',
                   pathname === item.href
                     ? 'bg-white/20 text-white'
                     : 'text-white/80 hover:bg-white/10 hover:text-white'

@@ -11,22 +11,22 @@ export default function HomePage() {
   const recentChats = sessions.slice(0, 3)
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-3xl mx-auto px-4 py-4 sm:py-6 space-y-5">
       {/* Welcome */}
-      <div className="text-center py-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
+      <div className="text-center py-3 sm:py-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-3 sm:mb-4">
           <Sprout className="h-8 w-8 text-primary" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-text mb-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-text mb-2">
           Welcome to Aglimate
         </h1>
-        <p className="text-text-secondary max-w-md mx-auto">
+        <p className="text-text-secondary max-w-md mx-auto text-sm sm:text-base">
           Your AI farming assistant. Ask questions, check weather, diagnose crops, and learn best practices.
         </p>
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {[
           { href: '/chat', icon: MessageSquare, label: 'Ask Question', color: 'bg-blue-50 text-blue-600' },
           { href: '/advisory', icon: Camera, label: 'Check Crop', color: 'bg-green-50 text-green-600' },
@@ -35,11 +35,11 @@ export default function HomePage() {
         ].map((action) => (
           <Link key={action.href} href={action.href}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
-              <CardContent className="p-4 flex flex-col items-center text-center gap-2">
+              <CardContent className="p-3 sm:p-4 flex flex-col items-center text-center gap-2 min-h-[120px]">
                 <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center`}>
                   <action.icon className="h-6 w-6" />
                 </div>
-                <span className="text-sm font-medium text-text">{action.label}</span>
+                <span className="text-xs sm:text-sm font-medium text-text">{action.label}</span>
               </CardContent>
             </Card>
           </Link>
@@ -60,7 +60,7 @@ export default function HomePage() {
               <Link key={session.id} href={`/chat`}>
                 <Card className="hover:bg-gray-50 transition-colors cursor-pointer">
                   <CardContent className="p-4">
-                    <p className="font-medium text-text truncate">{session.title}</p>
+                    <p className="font-medium text-text truncate text-sm">{session.title}</p>
                     <p className="text-xs text-text-muted mt-1">
                       {session.messages.length} messages &bull; {new Date(session.updatedAt).toLocaleDateString('en-NG')}
                     </p>
@@ -83,7 +83,7 @@ export default function HomePage() {
           </div>
           <Link href="/weather">
             <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 hover:shadow-md transition-shadow cursor-pointer">
-              <CardContent className="p-4 flex items-center gap-4">
+              <CardContent className="p-4 flex items-center gap-3">
                 <div>
                   <p className="font-semibold text-text">{settings.location}</p>
                   <p className="text-sm text-text-secondary">Tap to view full forecast and alerts</p>

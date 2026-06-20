@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-background text-text antialiased`}>
         <Header />
         <OfflineBanner />
-        <main className="pb-20 md:pb-0 min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)]">
+        <main className="pb-20 md:pb-6 min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)] safe-area-inset-bottom">
           {children}
         </main>
         <BottomNav />

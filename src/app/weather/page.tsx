@@ -17,10 +17,10 @@ export default function WeatherPage() {
   const { current, forecast, alerts, isLoading, error, refetch } = useWeather()
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-3xl mx-auto px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text">Weather</h1>
-        <Button variant="ghost" size="sm" onClick={refetch} disabled={isLoading}>
+        <h1 className="text-xl sm:text-2xl font-bold text-text">Weather</h1>
+        <Button variant="ghost" size="sm" onClick={refetch} disabled={isLoading} className="min-h-[40px]">
           <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin')} />
         </Button>
       </div>
@@ -36,7 +36,7 @@ export default function WeatherPage() {
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={cn(
-              'flex-1 py-2.5 text-sm font-medium rounded-lg transition-all',
+              'flex-1 py-2.5 text-sm font-medium rounded-lg transition-all min-h-[40px]',
               activeTab === tab.key
                 ? 'bg-white text-primary shadow-sm'
                 : 'text-text-muted hover:text-text'
@@ -56,7 +56,7 @@ export default function WeatherPage() {
       {error && (
         <div className="p-4 bg-error/10 border border-error/20 rounded-xl text-error text-center">
           <p className="font-medium">{error}</p>
-          <Button variant="outline" size="sm" onClick={refetch} className="mt-3">
+          <Button variant="outline" size="sm" onClick={refetch} className="mt-3 min-h-[40px]">
             Try Again
           </Button>
         </div>
@@ -86,9 +86,9 @@ export default function WeatherPage() {
           {alerts.length > 0 ? (
             <AlertBanner alerts={alerts} />
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✓</span>
+            <div className="text-center py-10 sm:py-12">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl sm:text-3xl">✓</span>
               </div>
               <h3 className="text-lg font-semibold text-text">No Active Alerts</h3>
               <p className="text-text-secondary mt-1">Weather conditions are normal for your area.</p>

@@ -19,6 +19,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           'active:scale-[0.98]',
+          // Mobile-first touch targets
+          'min-h-[44px] touch-manipulation',
           {
             'bg-primary text-white hover:bg-primary-dark shadow-sm': variant === 'primary',
             'bg-accent text-white hover:bg-orange-700 shadow-sm': variant === 'secondary',
@@ -27,10 +29,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'bg-error text-white hover:bg-red-700': variant === 'danger',
           },
           {
-            'px-3 py-1.5 text-sm': size === 'sm',
-            'px-4 py-2.5 text-base': size === 'md',
-            'px-6 py-3 text-lg': size === 'lg',
-            'h-12 w-12 p-0': size === 'icon',
+            'px-4 py-2 text-sm': size === 'sm',
+            'px-5 py-2.5 text-base': size === 'md',
+            'px-6 py-3.5 text-lg': size === 'lg',
+            'h-12 w-12 p-0 text-base': size === 'icon',
           },
           className
         )}

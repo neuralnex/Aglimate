@@ -15,6 +15,16 @@
   input, textarea, select {
     font-size: 16px;
   }
+
+  /* Mobile-first touch targets */
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
 }
 
 @layer components {
@@ -29,10 +39,40 @@
   .safe-area-pb {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+
+  /* Card component enhancements */
+  .card {
+    @apply rounded-xl bg-surface shadow-sm border border-gray-100;
+  }
+
+  /* Touch-friendly button */
+  .touch-btn {
+    @apply min-h-[44px] min-w-[44px] px-4 py-2;
+  }
+
+  /* Mobile input styling */
+  .mobile-input {
+    @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Safe area insets for notched devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
   }
 }

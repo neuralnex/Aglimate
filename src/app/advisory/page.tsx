@@ -63,18 +63,18 @@ export default function AdvisoryPage() {
 
   if (result) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="max-w-2xl mx-auto px-4 py-4 sm:py-6">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4">
-              <CheckCircle className="h-8 w-8 text-success" />
-              <h2 className="text-xl font-bold text-text">Advisory Ready</h2>
+              <CheckCircle className="h-7 w-7 text-success flex-shrink-0" />
+              <h2 className="text-lg sm:text-xl font-bold text-text">Advisory Ready</h2>
             </div>
             <div className="prose prose-sm max-w-none">
-              <p className="text-text leading-relaxed whitespace-pre-wrap">{result}</p>
+              <p className="text-text leading-relaxed whitespace-pre-wrap text-sm sm:text-base">{result}</p>
             </div>
-            <div className="mt-6 flex gap-3">
-              <Button onClick={handleReset} variant="outline" className="flex-1">
+            <div className="mt-4 sm:mt-6 flex gap-3">
+              <Button onClick={handleReset} variant="outline" className="flex-1" size="md">
                 <RotateCcw className="h-4 w-4 mr-2" />
                 New Advisory
               </Button>
@@ -86,9 +86,9 @@ export default function AdvisoryPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold text-text mb-2">Climate Advisory</h1>
-      <p className="text-text-secondary mb-6">Describe your farming situation and optionally add a photo for better advice.</p>
+    <div className="max-w-2xl mx-auto px-4 py-4 sm:py-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-text mb-2">Climate Advisory</h1>
+      <p className="text-text-secondary mb-4 sm:mb-6 text-sm sm:text-base">Describe your farming situation and optionally add a photo for better advice.</p>
 
       <StepIndicator
         currentStep={advisoryStep}
@@ -112,7 +112,7 @@ export default function AdvisoryPage() {
               <button
                 key={tag}
                 onClick={() => setAdvisoryData({ query: tag + ' - ' + advisoryData.query })}
-                className="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-text hover:bg-primary/10 hover:text-primary transition-colors"
+                className="px-3 py-1.5 bg-gray-100 rounded-full text-sm text-text hover:bg-primary/10 hover:text-primary transition-colors min-h-[40px]"
               >
                 {tag}
               </button>
@@ -123,6 +123,7 @@ export default function AdvisoryPage() {
             <Button
               onClick={() => setAdvisoryStep(2)}
               disabled={!advisoryData.query.trim()}
+              size="md"
             >
               Continue
               <ArrowRight className="h-4 w-4 ml-2" />
@@ -140,12 +141,12 @@ export default function AdvisoryPage() {
             previewUrl={previewUrl}
           />
 
-          <div className="flex justify-between">
-            <Button variant="ghost" onClick={() => setAdvisoryStep(1)}>
+          <div className="flex justify-between gap-3">
+            <Button variant="ghost" onClick={() => setAdvisoryStep(1)} size="md">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
-            <Button onClick={() => setAdvisoryStep(3)}>
+            <Button onClick={() => setAdvisoryStep(3)} size="md">
               {advisoryData.photo ? 'Continue' : 'Skip'}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
@@ -169,8 +170,8 @@ export default function AdvisoryPage() {
             </div>
           )}
 
-          <div className="flex justify-between">
-            <Button variant="ghost" onClick={() => setAdvisoryStep(2)}>
+          <div className="flex justify-between gap-3">
+            <Button variant="ghost" onClick={() => setAdvisoryStep(2)} size="md">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
@@ -178,6 +179,7 @@ export default function AdvisoryPage() {
               onClick={handleSubmit}
               isLoading={isSubmitting}
               disabled={!advisoryData.query.trim() || isSubmitting}
+              size="md"
             >
               {isSubmitting ? 'Analyzing...' : 'Get Advisory'}
             </Button>
