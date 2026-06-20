@@ -73,7 +73,7 @@ npm start
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `NEXT_PUBLIC_API_URL` | Backend API endpoint | `https://nexusbert-aglimate.hf.space/` |
+| `NEXT_PUBLIC_API_URL` | Backend API endpoint | `` |
 
 ### Tailwind CSS
 
