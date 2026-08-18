@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState, useRef, type FormEvent } from 'react'
 import { api, getApiBase, resetApiBase } from '@/lib/api'
 import { AdviseResponse, COMMON_CROPS, GROWTH_STAGES } from '@/types'
 import { Button } from '@/components/ui/Button'
@@ -22,10 +22,18 @@ import {
   Wifi,
   WifiOff,
   CheckCircle2,
+  X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type Status = 'idle' | 'loading' | 'result' | 'error'
+
+// Format elapsed time in MM:SS
+function formatElapsedTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
 
 const TAG_CHIPS = ['Leaves yellowing', 'Pests visible', 'Water issue', 'Not growing', 'Wilting']
 
@@ -46,12 +54,36 @@ export default function HomePage() {
   const [showPhoto, setShowPhoto] = useState(false)
   const [showLocation, setShowLocation] = useState(false)
   const [healthBanner, setHealthBanner] = useState<{ ok: boolean; message: string } | null>(null)
+  const [elapsedTime, setElapsedTime] = useState(0)
 
   const [apiBaseMissing, setApiBaseMissing] = useState(false)
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
   useEffect(() => {
     const injected = typeof window !== 'undefined' ? (window.__AGLIMATE_API_URL__ ?? '') : ''
     setApiBaseMissing(getApiBase().length === 0 && injected.length === 0)
   }, [])
+
+  // Start timer when loading
+  useEffect(() => {
+    if (status === 'loading') {
+      timerRef.current = setInterval(() => {
+        setElapsedTime((prev) => prev + 1)
+      }, 1000)
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+      setElapsedTime(0)
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [status])
 
   const handlePhotoChange = (next: File | null) => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
@@ -72,28 +104,59 @@ export default function HomePage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!query.trim()) return
+    
+    // Cancel any existing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+    
     setStatus('loading')
     setError(null)
     setHealthBanner(null)
+    setElapsedTime(0)
 
     try {
-      const result = await api.advise({
-        query: query.trim(),
-        crop: crop.trim() || undefined,
-        growthStage: growthStage.trim() || undefined,
-        latitude: lat ?? undefined,
-        longitude: lon ?? undefined,
-        photo: photo ?? undefined,
-      })
+      const result = await api.advise(
+        {
+          query: query.trim(),
+          crop: crop.trim() || undefined,
+          growthStage: growthStage.trim() || undefined,
+          latitude: lat ?? undefined,
+          longitude: lon ?? undefined,
+          photo: photo ?? undefined,
+        },
+        controller.signal
+      )
       setResponse(result)
       setStatus('result')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get advisory')
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError('Request cancelled')
+      } else {
+        setError(err instanceof Error ? err.message : 'Failed to get advisory')
+      }
       setStatus('error')
+    } finally {
+      abortControllerRef.current = null
+    }
+  }
+
+  const handleCancel = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
+      setStatus('idle')
     }
   }
 
   const handleReset = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
+    }
     setStatus('idle')
     setResponse(null)
     setError(null)
@@ -108,6 +171,7 @@ export default function HomePage() {
     setLocationName(null)
     setShowPhoto(false)
     setShowLocation(false)
+    setElapsedTime(0)
   }
 
   const testConnection = async () => {
@@ -237,6 +301,18 @@ export default function HomePage() {
                 >
                   {status === 'loading' ? 'Analyzing climate data…' : 'Get Climate-First Advisory'}
                 </Button>
+                {status === 'loading' && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                    onClick={handleCancel}
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Cancel
+                  </Button>
+                )}
               </form>
             </CardContent>
           </Card>
@@ -246,6 +322,9 @@ export default function HomePage() {
               <CardContent className="p-6 flex flex-col items-center gap-3 text-text-secondary">
                 <LoadingSpinner size="lg" />
                 <p className="text-sm">Reading WaPOR data, checking climate, and drafting advice…</p>
+                <p className="text-xs text-text-muted">
+                  Processing time: {formatElapsedTime(elapsedTime)}
+                </p>
               </CardContent>
             </Card>
           )}

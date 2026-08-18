@@ -50,6 +50,11 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout 
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), timeout)
 
+  // If caller provides a signal, abort the timeout controller when that signal aborts
+  if (options.signal) {
+    options.signal.addEventListener('abort', () => controller.abort())
+  }
+
   try {
     const response = await fetch(url, { ...options, signal: controller.signal })
     clearTimeout(timeoutId)
@@ -79,7 +84,7 @@ export const api = {
     return response.json()
   },
 
-  async advise(data: AdviseRequest): Promise<AdviseResponse> {
+  async advise(data: AdviseRequest, signal?: AbortSignal): Promise<AdviseResponse> {
     const formData = new FormData()
     formData.append('query', data.query)
     if (data.crop) formData.append('crop', data.crop)
@@ -90,8 +95,8 @@ export const api = {
 
     const response = await fetchWithTimeout(
       `${API_BASE}/advise`,
-      { method: 'POST', body: formData },
-      120000,
+      { method: 'POST', body: formData, signal },
+      1200000,
     )
 
     if (!response.ok) {
